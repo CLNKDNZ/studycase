@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  couchbase:
+    build:
+      context: .
+      target: db
+    container_name: todo-database
+    networks:
+      - hepsiemlaknet
+    ports:
+      - 8091:8091
+      - 8092:8092
+      - 8093:8093
+      - 11210:11210
+    environment:
+      - COUCHBASE_ADMINISTRATOR_USERNAME=Administrator
+      - COUCHBASE_ADMINISTRATOR_PASSWORD=password
+      - COUCHBASE_BUCKET=hepsiemlak
+      - COUCHBASE_RBAC_USERNAME=Administrator
+      - COUCHBASE_RBAC_PASSWORD=password
+      - COUCHBASE_RBAC_NAME="admin"
+      - CLUSTER_NAME=hepsiemlak
+    expose:
+      - 8091
+      - 8092
+      - 8093
+      - 11210
+  webapp:
+    build:
+      context: .
+      target: app
+    container_name: todo-backend
+    depends_on:
+      - couchbase
+    restart: always
+    environment:
+      COUCHBASE_HOST: couchbase
+    networks:
+      - hepsiemlaknet
+    ports:
+      - 9090:9090
+    expose:
+      - 8091
+networks:
+  hepsiemlaknet:
+    driver: bridge

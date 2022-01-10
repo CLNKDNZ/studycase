@@ -1,0 +1,18 @@
+
+server:
+  port: 9090
+
+  tomcat:
+    min-spare-threads: 10
+    max-threads: 20
+
+spring:
+  couchbase:
+    password: password
+    #connection-string: couchbase://127.0.0.1 FOR DEGUG ON LOCALHOST
+    connection-string: couchbase
+    username: Administrator
+  data:
+    couchbase:
+      auto-index: 'true'
+      bucket-name: hepsiemlak
